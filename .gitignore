@@ -1,5 +1,11 @@
 *.org*
 *~
+*.html
+script.js
+
 npm-debug.log
 */node_modules/*
-  
+
+.eslintrc
+.npmrc 
+*/.exercism
