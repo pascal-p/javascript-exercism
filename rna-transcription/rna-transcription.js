@@ -11,19 +11,14 @@ export const toRna = (dna) => {
     T: 'A'
   };
 
-  var rna = "";
+  if (dna.length == 0) { return ""; };
 
-  if (dna.length == 0) {
-    return rna;
-  }
-  else {
-    // > 0
-    dna = dna.toUpperCase();
-  };
-  
-  for (var ix = 0; ix < dna.length; ix++) {
+  let rna = "";
+  dna = dna.toUpperCase();
+
+  for (let ix = 0; ix < dna.length; ix++) {
     if (! Object.keys(MAP_DNA_RNA).includes(dna.charAt(ix))) {
-      throw('Not a valid nucleotide!')
+      throw ('Not a valid nucleotide!')
     };
 
     rna += MAP_DNA_RNA[dna.charAt(ix)];
