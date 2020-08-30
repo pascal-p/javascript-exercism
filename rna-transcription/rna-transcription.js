@@ -16,7 +16,7 @@ const MAP_DNA_RNA = {
 };
 
 const transcribe = (ch) => {
-  if (! Object.keys(MAP_DNA_RNA).includes(ch)) { throw ('Not a valid nucleotide!'); };
+  if (! Object.keys(MAP_DNA_RNA).includes(ch)) { throw new Error('Not a valid nucleotide!'); };
   return MAP_DNA_RNA[ch]
 }
 

@@ -2,6 +2,13 @@ import { rows } from './pascals-triangle';
 
 describe('Pascals Triangle', () => {
   describe("Given a count, return a collection of that many rows of pascal's triangle", () => {
+
+    test('less than 0 is a no no', () => {
+      expect(() =>  {
+        rows(-1);
+      }).toThrow('Integer must be > 0');
+    });
+
     test('zero rows', () => {
       expect(rows(0)).toEqual([]);
     });
