@@ -86,6 +86,19 @@ describe('countWords', () => {
     );
   });
 
+  test('with apostrophes and quotation', () => {
+    const expectedCounts = {
+      first: 1,
+      'don\'t': 2,
+      laugh: 1,
+      then: 1,
+      cry: 1
+    };
+    expect(countWords('First: don\'t laugh. Then: \'don\'t\' cry.')).toEqual(
+      expectedCounts
+    );
+  });
+
   test('with quotations', () => {
     const expectedCounts = {
       joe: 1,
