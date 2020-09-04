@@ -30,7 +30,7 @@ describe('Transcription', () => {
     expect(toRna('AGCTTTTCATTCTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTCTGATAGCAGC')).toEqual('UCGAAAAGUAAGACUGACGUUGCCCGUUAUACAGAGACACACCUAAUUUUUUUCUCACAGACUAUCGUCG');
   });
 
-   test('dna correctly handles invalid input', () => {
+  test('dna correctly handles invalid input', () => {
      expect(() =>  {
        toRna('U');
      }).toThrow('Not a valid nucleotide!');
