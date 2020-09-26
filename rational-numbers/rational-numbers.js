@@ -50,8 +50,7 @@ export class Rational {
   }
 
   abs() {
-    [this._num, this._den] = [Math.abs(this._num), Math.abs(this._den)];
-    return this;
+    return new Rational(Math.abs(this._num), Math.abs(this._den))
   }
 
   exprational(n) {
