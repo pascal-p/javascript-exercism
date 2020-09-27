@@ -15,14 +15,13 @@ export const countWords = (str) => {
   str = str.replace(punctRE, ' ');  // replaceAll() not yet supported (but firefox)
 
   // second make sur the str is space separated (1 space only) and trimmed
-  const allSpacesRE = /(\t|\n|\s)+/g;
+  const allSpacesRE = /(\t|\n|\s|_)+/g;
   str = str.replace(allSpacesRE, ' ').trim();
 
   const wordRE = /^\w+$/i;            // no single-quote
   const wordMixedRE = /^[\w']+$/i;    // potentially multi-single quotes
 
   // closure
-  // const updateFn = (w) => wc.set(w, (wc.get(w) || 0) + 1);
   const updateFn = (w) => wc[w] = wc[w] === undefined ? 1 : wc[w] + 1;
 
   for (let word of str.split(' ')) {

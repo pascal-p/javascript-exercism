@@ -145,4 +145,15 @@ describe('countWords', () => {
     };
     expect(countWords(',\n,one,\n ,two \n \'three\'')).toEqual(expectedCounts);
   });
+
+  test('non alphanumeric', () => {
+    const expectedCounts = {
+      hey: 1,
+      my: 1,
+      spacebar: 1,
+      is: 1,
+      broken: 1
+    };
+    expect(countWords('hey,my_spacebar_is_broken')).toEqual(expectedCounts);
+  });
 });
