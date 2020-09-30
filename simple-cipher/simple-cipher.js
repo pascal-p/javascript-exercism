@@ -1,6 +1,5 @@
 //
-// This is only a SKELETON file for the 'Simple Cipher' exercise. It's been provided as a
-// convenience to get you started writing code faster.
+// File for the 'Simple Cipher' exercise.
 //
 
 const ALPHA = "abcdefghijklmnopqrstuvwxyz";
@@ -39,12 +38,12 @@ export class Cipher {
 
   encode(plain, canThrow=true) {
     if (canThrow) { check(plain); }
-    return this._transcode(plain, 'encode');
+    return this._transcode(plain, this._trans);
   }
 
   decode(ciphered, canThrow=true) {
     if (canThrow) { check(ciphered); }
-    return this._transcode(ciphered, 'decode');
+    return this._transcode(ciphered, this._revTrans);
   }
 
   get key() {
@@ -54,23 +53,22 @@ export class Cipher {
   //
   // internal helpers
   //
-  _transcode(input, kw) {
+  _transcode(input, fn) {
     // input can contains non latin chars that we ignore...
     return input.toLowerCase().split("")
       .filter(ch => ch.match(/[a-z]/))
-      .map(
-        (ch, ix) => REV_HSH.get(kw === 'encode' ? this._trans(ch, ix) : this._reverseTrans(ch, ix))
-      ).join('');
+      .map((ch, ix) => REV_HSH.get(fn(this, ch, ix)))
+      .join('');
   }
 
-  _reverseTrans(ch, ix) {
-    let jx = HSH.get(ch) - HSH.get(this._key.charAt(ix % this._klen));
+  _revTrans(self, ch, ix) {
+    let jx = HSH.get(ch) - HSH.get(self._key.charAt(ix % self._klen));
     jx = jx < 0 ? LEN_ALPHA + jx : jx;
     return jx % LEN_ALPHA;
   }
 
-  _trans(ch, ix) {
-    let jx = HSH.get(ch) + HSH.get(this._key.charAt(ix % this._klen))
+  _trans(self, ch, ix) {
+    const jx = HSH.get(ch) + HSH.get(self._key.charAt(ix % self._klen))
     return jx % LEN_ALPHA;
   }
 }
