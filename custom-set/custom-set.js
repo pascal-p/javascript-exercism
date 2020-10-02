@@ -5,10 +5,10 @@
 export class CustomSet {
   constructor(arg) {
     if (! arg) {
-      this.cs = new Map();
+      this._set = new Map();
     }
     else if (Array.isArray(arg)) {
-      this.cs = mapper(arg);
+      this._set = mapper(arg);
     }
     else throw new Error("argument not managed yet...");
 
@@ -16,8 +16,8 @@ export class CustomSet {
   }
 
   empty() {
-    // this.cs.keys() returns an iterator
-    return !this.cs.keys().next().value
+    // this._set.keys() returns an iterator
+    return !this._set.keys().next().value
   }
 
   contains(elt) {
@@ -25,21 +25,22 @@ export class CustomSet {
   }
 
   add(elt) {
-    if (!this.cs.has(elt)) { this.cs.set(elt, 1); }
+    if (!this._set.has(elt)) { this._set.set(elt, 1); }
     return this;
   }
 
   subset(cs) {
-    // true iff all elements of this.cs are in cs
-    // conversely false if some elements of this.cs are not in cs
+    // true iff all elements of this._set are in cs
+    // conversely false if some elements of this._set are not in cs
     // turn iterator into an array...
-    return ![...this.keys()].some(elt => !cs.has(elt));
+    return ![...this.items()].some(elt => !cs.has(elt));
   }
 
   disjoint(cs) {
-    // false if some elements of this.cs are in cs
-    return (this.card() > cs.card()) ? !toAry(cs).some(elt => this.has(elt))
-      : !toAry(this).some(elt => cs.has(elt));
+    // false if some elements of this._set are in cs or
+    // some elements of cs ar in this
+    return (this.card() > cs.card()) ? !cs.toAry().some(elt => this.has(elt))
+      : !this.toAry().some(elt => cs.has(elt));
   }
 
   eql(cs) {
@@ -52,43 +53,47 @@ export class CustomSet {
       return new CustomSet();
     }
     else if (this.card() === 0) {
-      return new CustomSet(toAry(cs));
+      return new CustomSet(cs.toAry());
     }
     else if (cs.card() === 0) {
-      return new CustomSet(toAry(this));
+      return new CustomSet(this.toAry());
     }
 
-    let [newCS, ocs] = this.card() > cs.card() ? [new CustomSet(toAry(this)), cs]:
-        [new CustomSet(toAry(cs)), this.cs];
+    let [newCS, ocs] = this.card() > cs.card() ? [new CustomSet(this.toAry()), cs]:
+        [new CustomSet(cs.toAry()), this];
 
-    newCS.cs = mapper(toAry(ocs), newCS.cs);
+    newCS._set = mapper(ocs.toAry(), newCS._set);
     return newCS
   }
 
   intersection(cs) {
-    const ary = (this.card() > cs.card()) ? toAry(cs).filter(elt => this.has(elt))
-          : toAry(this).filter(elt => cs.has(elt))
+    const ary = (this.card() > cs.card()) ? cs.toAry().filter(elt => this.has(elt))
+          : this.toAry().filter(elt => cs.has(elt))
     return new CustomSet(ary)
   }
 
   difference(cs) {
-    const ary = toAry(this).filter(elt => !cs.has(elt))
+    const ary = this.toAry().filter(elt => !cs.has(elt))
     return new CustomSet(ary)
   }
 
   // extension
 
   has(elt) {
-    return this.cs.has(elt);
+    return this._set.has(elt);
   }
 
-  keys() {
-    return this.cs.keys();
+  items() {
+    return this._set.keys();
   }
 
   card() {
     // number of elements in the set
-    return toAry(this).length;
+    return this.toAry().length;
+  }
+
+  toAry() {
+    return [...this._set.keys()];
   }
 }
 
@@ -103,5 +108,3 @@ const mapper = (arg, init=new Map) => {
     init
   )
 }
-
-const toAry = (cset) => [...cset.keys()];
