@@ -33,10 +33,16 @@ describe('Change', () => {
     expect(result).toEqual([21, 21, 21]);
   });
 
-  test('test large amount of change', () => {
+  test('test large amount of change/1', () => {
     const change = new Change();
     const result = change.calculate([1, 2, 5, 10, 20, 50, 100], 999);
     expect(result).toEqual([2, 2, 5, 20, 20, 50, 100, 100, 100, 100, 100, 100, 100, 100, 100]);
+  });
+
+  test('test large amount of change/2', () => {
+    const change = new Change();
+    const result = change.calculate([1, 2, 5, 10, 20, 50, 100, 500], 1999);
+    expect(result).toEqual([2, 2, 5, 20, 20, 50, 100, 100, 100, 100, 500, 500, 500]);
   });
 
   test('test possible change without unit coins available', () => {

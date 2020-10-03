@@ -1,11 +1,13 @@
 //
-// This is only a SKELETON file for the 'Change' exercise. It's been provided as a
-// convenience to get you started writing code faster.
+// the 'Change' exercise.
 //
 
 export class Change {
 
   calculate(coins, target) {
+    //
+    // using DP
+    //
     if (target < 0) throw new Error("Negative totals are not allowed.");
 
     let res_ary = Array.of(target + 1);
