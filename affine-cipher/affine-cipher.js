@@ -41,11 +41,10 @@ const grouping = (s, ch) => (s.length + 1) % GRP_SIZE === 0 ? s + ch + ' ' : s +
 
 
 export const encode = (phrase, key) => {
-  // throw new Error('Remove this statement and implement this function');
   const [a, b] = [key.a, key.b];
 
   if (!isCoprime(a)) {
-    throw new Error('a and m must be coprime.'); // `a: ${a} and M: ${M} must be co-prime`
+    throw new Error('a and m must be coprime.');
   }
 
   const encode_fn = (x) => {
@@ -63,7 +62,7 @@ export const decode = (phrase, key) => {
   const [a, b] = [key.a, key.b];
 
   if (!isCoprime(a)) {
-    throw new Error('a and m must be coprime.'); // `a: ${a} and M: ${M} must be co-prime`)
+    throw new Error('a and m must be coprime.');
   }
 
   const inv_a = xgcd(a, M)[1];
