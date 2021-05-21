@@ -1,7 +1,6 @@
-//
-// This is only a SKELETON file for the 'Twelve Days' exercise. It's been provided as a
-// convenience to get you started writing code faster.
-//
+/*
+  The Twelve Days of Christmas
+ */
 
 const PREFIX = "On the <nth> day of Christmas my true love gave to me:"
 
@@ -26,13 +25,19 @@ export const recite = (from, to=undefined) => {
   }
 
   if (to === undefined) {
-    return oneString(from);
+    return oneVerse(from);
   }
 
-  return "NADA";
+  // repetition - multi-verses (pun intended)
+  let res = "";
+  for (let ix=from; ix < to; ix++) {
+    res = res.concat(oneVerse(ix) + "\n")
+  }
+  res = res.concat(oneVerse(to));
+  return res;
 };
 
-const oneString = (from) => {
+const oneVerse = (from) => {
   let prefix = PREFIX;
   prefix = prefix.replace('<nth>', PRESENTS[from - 1][0]);
 
