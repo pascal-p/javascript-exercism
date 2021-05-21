@@ -127,20 +127,26 @@ export const convert = (str) => {
     return "?";
   }
 
-  // n > 1 || m > 1
-  let digits = new Array(m); // assuming n == 1
-  for (let g=0; g < m; g++) {
+  // n >= 1 || m >= 1
+  const p = n * m;
+  let digits = new Array(p);
+  for (let g=0; g < p; g++) {
     digits[g] = new Array();
   }
 
-  for (let r=0; r < ary.length; r++) {
-    for (let g=0; g < m; g++) {
-      digits[g].push(ary[r].slice(g * M, (g + 1) * M));
+  let offset = 0;
+  for (let r=0; r < ary.length; r++) { // [0, N[, [N..2N[, ...
+    if (r > 0 && r % N == 0) offset += M;
+
+    for (let g=0; g < m; g++) {         // 0..m[==3]
+      digits[g + offset].push(ary[r].slice(g * M, (g + 1) * M));
     }
   }
 
   let result = "";
-  for (let g=0; g < m; g++) {
+  for (let g=0; g < p; g++) {
+    if (n > 1 && g > 0 && g % M == 0) { result = result.concat(","); }
+
     const str = digits[g].join("\n");
     if (DIGIT_MAP.has(str)) {
       result = result.concat(String(DIGIT_MAP.get(str)));
