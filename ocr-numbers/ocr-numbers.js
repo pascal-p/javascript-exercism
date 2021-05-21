@@ -26,10 +26,10 @@ Update your program to recognize multi-character binary strings, replacing garbl
 
 - Step Three
 Update your program to recognize all numbers 0 through 9, both individually and as part of a larger string.
- _ 
+ _
  _|
-|_ 
-   
+|_
+
 Is converted to "2"
 
       _  _     _  _  _  _  _  _  #
@@ -41,16 +41,16 @@ Is converted to "1234567890"
 
 - Step Four
 Update your program to handle multiple numbers, one per line. When converting several lines, join the lines with commas.
-    _  _ 
+    _  _
   | _| _|
-  ||_  _|         
-    _  _ 
-|_||_ |_ 
+  ||_  _|
+    _  _
+|_||_ |_
   | _||_|
- _  _  _ 
+ _  _  _
   ||_||_|
   ||_| _|
-         
+
 Is converted to "123,456,789"
  */
 
@@ -70,7 +70,7 @@ const DIGIT_MAP = new Map([
     ' _|\n' +
     '|_ \n' +
     '   ', 2],
-  
+
   [' _ \n' +
    ' _|\n' +
    ' _|\n' +
@@ -83,7 +83,7 @@ const DIGIT_MAP = new Map([
    '|_ \n' +
    ' _|\n' +
    '   ', 5],
-  
+
   [' _ \n' +
    '|_ \n' +
    '|_|\n' +
@@ -112,14 +112,43 @@ export const convert = (str) => {
     throw new Error(`Incorrect input size - num. of rows should be multiple of ${N}`);
   }
 
-  if (! ary.every((row) => row.length % M == 0)) {
+  if (ary.some((row) => row.length % M != 0)) { // (! ary.every((row) => row.length % M == 0)) {
     throw new Error(`Incorrect input size - num. of cols should be multiple of ${M}`);
   }
 
   if (DIGIT_MAP.has(str)) {
     return String(DIGIT_MAP.get(str));
   }
-
   //
-  return false;
+  const [n, m] = [ary.length / N >> 0, ary[0].length / M >> 0];
+
+  if (n == 1 && m == 1) {
+    // we have a problem with the input
+    return "?";
+  }
+
+  // n > 1 || m > 1
+  let digits = new Array(m); // assuming n == 1
+  for (let g=0; g < m; g++) {
+    digits[g] = new Array();
+  }
+
+  for (let r=0; r < ary.length; r++) {
+    for (let g=0; g < m; g++) {
+      digits[g].push(ary[r].slice(g * M, (g + 1) * M));
+    }
+  }
+
+  let result = "";
+  for (let g=0; g < m; g++) {
+    const str = digits[g].join("\n");
+    if (DIGIT_MAP.has(str)) {
+      result = result.concat(String(DIGIT_MAP.get(str)));
+    }
+    else {
+      result = result.concat("?");
+    }
+  }
+
+  return result;
 };
