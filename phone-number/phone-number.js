@@ -25,9 +25,11 @@
   Note: As this exercise only deals with telephone numbers used in NANP-countries, only 1 is considered a valid country code.
  */
 
+const PHONE_LEN = 11;  // comprising prefix
+
 export const clean = (str) => {
-  // Area Code - 3 digits => leftist one from 2..9 
-  // Exch Code - 3 digits => leftist one from 2..9 
+  // Area Code - 3 digits => leftist one from 2..9
+  // Exch Code - 3 digits => leftist one from 2..9
   // Rest      - 4 digits
 
   if (typeof str != 'string') {
@@ -36,31 +38,46 @@ export const clean = (str) => {
 
   // remove all optional characters and check for presence of non-allowed characters
   // 1. remove optional chars
-  const regexp1 = /^\+1|^1|\s+|\(|\)/g;
+  const regexp1 = /^\+1|^1|\s+|\(|\)|\-/g;
   let c_str = str.replace(regexp1, '');
-  
+
   // 2. check for non-allowed characters
-  // const regexp2 = /(?:[^0-9]+)/g;
+  const regexp2 = /(?:[^0-9]+)/g
+  const ary = c_str.match(regexp2);
+
+  if (ary !== null && ary.length > 0) {             // Match on  non-allowed characters
+    if (ary.some((x) => x.match(/[!?\.,;:@]/))) {   // Punctuation case
+      throw new Error('Punctuations not permitted');
+    }
+    else if (ary.some((x) => x.match(/[a-b]/i))) {  // Letters
+      throw new Error('Letters not permitted');
+    }
+
+    throw new Error("This phone number contains invalid characters");
+  }
+
+  if (c_str.length != PHONE_LEN - 1) {
+    throw new Error('More than 11 digits');
+  }
 
   //console.log(`cleaned up ph. number: ${c_str}`);
-  
+  c_str = c_str.replace(regexp2, '');
+
   // validation
   const phNumRegexp = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
-  if (! c_str.match(phNumRegexp)) {
+  if (! c_str.match(phNumRegexp)) {                 // Validation of Area + Exch codes
     // problem detected
-    // console.log(`validation problem with ph. number`);
-    
     if (c_str.startsWith('0')) {
-      throw new Error('Area code cannot start with zero')
+      throw new Error('Area code cannot start with zero');
     }
     else if (c_str.startsWith('1')) {
-      throw new Error('Area code cannot start with one')
+      throw new Error('Area code cannot start with one');
     }
     else if (c_str.charAt(3) == '0') {
-      throw new Error('Exchange code cannot start with zero')
+      throw new Error('Exchange code cannot start with zero');
     }
     else if (c_str.charAt(3) == '1') {
-      throw new Error('Exchange code cannot start with one')
+      throw new Error('Exchange code cannot start with one');
     }
 
     throw new Error("This phone number is NOT valid");

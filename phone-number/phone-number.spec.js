@@ -34,23 +34,26 @@ describe('Phone Number', () => {
       expect(clean('+1 (223) 456-7890')).toEqual('2234567890');
     });
 
-    xtest('invalid when more than 11 digits', () => {
+    // OK:
+    test('invalid when more than 11 digits', () => {
       expect(() => clean('321234567890')).toThrow(
         new Error('More than 11 digits')
       );
     });
 
-    xtest('invalid with letters', () => {
+    test('invalid with letters', () => {
       expect(() => clean('123-abc-7890')).toThrow(
         new Error('Letters not permitted')
       );
     });
 
-    xtest('invalid with punctuations', () => {
+    test('invalid with punctuations', () => {
       expect(() => clean('123-@:!-7890')).toThrow(
         new Error('Punctuations not permitted')
       );
     });
+
+    // OK:
 
     test('invalid if area code starts with 0', () => {
       expect(() => clean('(023) 456-7890')).toThrow(
