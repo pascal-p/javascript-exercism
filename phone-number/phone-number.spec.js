@@ -25,7 +25,7 @@ describe('Phone Number', () => {
         new Error('Incorrect number of digits')
       );
     });
-    
+
     test('invalid when 11 digits does not start with a 1', () => {
       expect(() => clean('22234567890')).toThrow(
         new Error('11 digits must start with 1')
@@ -46,7 +46,7 @@ describe('Phone Number', () => {
         new Error('Punctuations not permitted')
       );
     });
-    
+
     test('invalid when more than 11 digits', () => {
       expect(() => clean('321234567890')).toThrow(
         new Error('More than 11 digits')

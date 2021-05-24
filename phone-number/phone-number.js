@@ -22,17 +22,18 @@
 
     should all produce the output: 6139950253
 
-  Note: As this exercise only deals with telephone numbers used in NANP-countries, only 1 is considered a valid country code.
+  Note: As this exercise only deals with telephone numbers used in NANP-countries,
+  only 1 is considered a valid country code.
  */
 
-const PHONE_LEN = 11;  // comprising prefix
+const PHONE_LEN = 11;                                // comprising prefix
 const OPT_CHAR_RE = /^\+1|^1|\s+|\(|\)|\-/g;
 const NON_ALLOWED_RE = /(?:[^0-9]+)/g;
 const PH_NUM_RE = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
 const PUNCT_RE = /[!?\.,;:@_]/;
 const LETTER_RE = /[a-b]/i;
 
-   
+
 export const clean = (str) => {
   // Area Code - 3 digits => leftist one from 2..9
   // Exch Code - 3 digits => leftist one from 2..9
@@ -50,52 +51,71 @@ export const clean = (str) => {
   let ph_str = str.replace(OPT_CHAR_RE, '');
 
   // 2. check for non-allowed characters
-  const ary = ph_str.match(NON_ALLOWED_RE);
-  
-  if (ary !== null && ary.length > 0) {             // Match on  non-allowed characters
-    // if only dot => OK
-    let pass = false
-    if (ary.every((x) => x.match(/\./))) {
-      ph_str = ph_str.replace(NON_ALLOWED_RE, '');
-      pass = true;
-    }    
-    else if (ary.some((x) => x.match(PUNCT_RE))) {  // Punctuation case
-      throw new Error('Punctuations not permitted');
-    }
-    else if (ary.some((x) => x.match(LETTER_RE))) { // Letters
-      throw new Error('Letters not permitted');
-    }
-    
-    if (!pass)
-      throw new Error("This phone number contains invalid characters");
-  }
+  ph_str = check4NonAllowedChar(ph_str);
 
   if (ph_str.length > PHONE_LEN - 1) {
     throw new Error('More than 11 digits');
   }
 
   ph_str = ph_str.replace(NON_ALLOWED_RE, '');
-  
+
   if (ph_str.length < PHONE_LEN - 1) {
     throw new Error('Incorrect number of digits');
   }
-  
-  if (! ph_str.match(PH_NUM_RE)) {                  // Validation of Area + Exch codes
-    if (ph_str.startsWith('0')) {
-      throw new Error('Area code cannot start with zero');
-    }
-    else if (ph_str.startsWith('1')) {
-      throw new Error('Area code cannot start with one');
-    }
-    else if (ph_str.charAt(3) == '0') {
-      throw new Error('Exchange code cannot start with zero');
-    }
-    else if (ph_str.charAt(3) == '1') {
-      throw new Error('Exchange code cannot start with one');
-    }
 
+  if (! ph_str.match(PH_NUM_RE)) {                  // Validation of Area + Exch codes
+    checkAreaCode(ph_str);
+
+    checkExchCode(ph_str);
+
+    // fall-back
     throw new Error("This phone number is NOT valid");
   }
 
-  return ph_str
+  return ph_str;
 };
+
+const check4NonAllowedChar = (ph_str) => {
+  const ary = ph_str.match(NON_ALLOWED_RE);
+
+  if (ary !== null && ary.length > 0) {             // Match on  non-allowed characters
+
+    let pass = false
+
+    if (ary.every((x) => x.match(/\./))) {          // if only dot => OK
+      ph_str = ph_str.replace(NON_ALLOWED_RE, '');
+      pass = true;
+    }
+    else if (ary.some((x) => x.match(PUNCT_RE))) {  // Punctuation case
+      throw new Error('Punctuations not permitted');
+    }
+    else if (ary.some((x) => x.match(LETTER_RE))) { // Letters
+      throw new Error('Letters not permitted');
+    }
+
+    if (!pass)
+      throw new Error("This phone number contains invalid characters");
+
+  }
+  return ph_str;
+}
+
+const checkAreaCode = (ph_str) => {
+  if (ph_str.startsWith('0')) {
+    throw new Error('Area code cannot start with zero');
+  }
+  else if (ph_str.startsWith('1')) {
+    throw new Error('Area code cannot start with one');
+  }
+  return
+}
+
+const checkExchCode  = (ph_str) => {
+  if (ph_str.charAt(3) == '0') {
+    throw new Error('Exchange code cannot start with zero');
+  }
+  else if (ph_str.charAt(3) == '1') {
+    throw new Error('Exchange code cannot start with one');
+  }
+  return
+}
