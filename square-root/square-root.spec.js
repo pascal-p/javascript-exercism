@@ -32,12 +32,12 @@ describe('Square root', () => {
 
     expect(Math.abs(squareRoot(125348, EPS) - expected)).toBeLessThanOrEqual(EPS);
   });
-  
+
   test('root of 1522756', () => {
     const EPS = 1e-8;
     const expected = 1234;
 
     expect(squareRoot(1522756, EPS)).toEqual(expected);
   });
-  
+
 });
