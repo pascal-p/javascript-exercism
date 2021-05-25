@@ -82,8 +82,48 @@ export class LinkedList {
     this.len += 1;
   }
 
-  delete() {
-    throw new Error('Remove this statement and implement this function');
+  delete(v) {
+    if (this.len == 0) return undefined;
+
+    if (this.len == 1 && this.head.v == v) { // delete from singleton list
+      this.len = 0;
+      this.head = this.tail = undefined;
+      return;
+    }
+
+    // find element in list
+    let cur = this.head;
+    let found = false;
+    while (cur != this.tail) {
+      if (cur.v == v) {
+        found = true;
+        break;
+      }
+      cur = cur.next;
+    }
+
+    if (! found) {
+      if (typeof(cur) !== 'undefined' && cur.v == v) {
+        // NO-OP => special case: delete tail
+      }
+      else return undefined;
+    }
+
+    if (cur == this.head) {       // special case: delete head
+      this.head = this.head.next;
+      this.head.prev = undefined;
+    }
+    else if (cur == this.tail) {  // special case: delete tail
+      this.tail = this.tail.prev;
+      this.tail.next = undefined;
+    }
+    else {
+      cur.prev.next = cur.next;
+      cur.next.prev = cur.prev;
+    }
+
+    this.len -= 1;
+    return;
   }
 
   count() {
