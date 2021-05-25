@@ -22,7 +22,7 @@
 */
 
 export const saddlePoints = (matrix) => {
-  // throw new Error('Remove this statement and implement this function');
+  // Assume matrix as input
 
   if (matrix.length == 0 || (matrix.length == 1 && matrix[0].length == 0)) {
     return [];
@@ -35,7 +35,7 @@ export const saddlePoints = (matrix) => {
     for (let jx=0; jx < ncols; jx++) {
 
       let isSaddlePoint = true; // matrix[ix][jx] is a saddle point, a priori
-      
+
       // check current row
       for (let rjx = 0; rjx < ncols; rjx++) {
         if (rjx == jx) continue;
@@ -43,19 +43,19 @@ export const saddlePoints = (matrix) => {
         if (matrix[ix][rjx] > matrix[ix][jx]) {
           isSaddlePoint = false;
           break;
-        }     
+        }
       }
 
       if (isSaddlePoint) {
         // check current col
-        for (let rix=0; rix < ncols; rix++) {
+        for (let rix=0; rix < nrows; rix++) {
           if (rix == ix) continue;
 
           if (matrix[rix][jx] < matrix[ix][jx]) {
             isSaddlePoint = false;
             break;
-          } 
-        }        
+          }
+        }
       }
 
       if (isSaddlePoint) {
