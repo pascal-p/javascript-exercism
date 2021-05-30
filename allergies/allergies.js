@@ -9,7 +9,7 @@ const ALLERGIES = new Map([
   [4, 'shellfish'],
   [8, 'strawberries'],
   [16, 'tomatoes'],
-  [32, 'chocolat'],
+  [32, 'chocolate'],
   [64, 'pollen'],
   [128, 'cats']
 ]);
@@ -23,15 +23,15 @@ export class Allergies {
       throw new Error('Expecting a natural integer');
     }
 
-    val = Math.trunc(val); // if float given...
+    val = Math.trunc(val);      // if float given...
+    val %= 256;                 // ... module 256
 
-    // ... module 256
-    val %= 256;
+    let allergies = new Set();  // collect the allergies
+    let keys = [];              // maintain order
 
-    // collect the allergies
-    let allergies = new Set();
     for (let k of ALL_KEYS) {
       if (val >= k) {
+        keys.push(k)
         allergies.add(ALLERGIES.get(k))
         val -= k;
       }
@@ -40,14 +40,15 @@ export class Allergies {
     }
 
     this.allergies = allergies;
+    this.keys = keys;
   }
 
   list() {
-    throw new Error('Remove this statement and implement this function');
+    return this.keys.reverse().map((k) => ALLERGIES.get(k));
   }
 
   allergicTo(allergy) {
-    // TODO: check validity of allergy - lazy approach id does not matter...
+    // Check validity of allergy? No, lazy approach, it does not matter...
     // ... as we test for presence
     return this.allergies.has(allergy);
   }
