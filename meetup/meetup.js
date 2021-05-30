@@ -50,14 +50,10 @@ export const meetup = (year, month, descriptor, weekday) => {
 
   const weekdayIx = WEEKDAYS.get(weekday)
   let date;
-
-  for (let valDesc of DESCRIPTORS.get(descriptor)) {
+  for (let valDesc of DESCRIPTORS.get(descriptor)) {   // trial...
     date = new Date(year, month - 1, valDesc)
-    // console.log("Trying: ", valDesc,  " => ", date, " weekday: ", date.getDay(), " cmp: ", weekdayIx);
 
-    if (date.getDay() == weekdayIx) {
-      // FIXME: leap year
-
+    if (date.getDay() == weekdayIx) {                  // adjust...
       if (descriptor == "last" && valDesc + 7 <= monthDur(month, year)) {
         date = new Date(year, month - 1, valDesc + 7)
         if (date.getDay() == weekdayIx) {
@@ -80,7 +76,6 @@ const monthDur = (month, year=undefined) => {
   if (month !== 2) {
     return MONTH_DUR[month - 1];
   }
-
   // month == 2 and year given
   if (typeof year === 'undefined') {
     throw new Error("Year must be defined for February");
@@ -99,6 +94,5 @@ const capitalize = (word) => {
   if (word[0] >= 'a' && word[0] <= 'z') {
     return String.fromCharCode(word.charCodeAt(0) + CAP_TRANS).concat(word.slice(1, word.length));
   }
-
   return word; // as it is
 }
