@@ -1,7 +1,6 @@
-//
-// This is only a SKELETON file for the 'Queen Attack' exercise. It's been provided as a
-// convenience to get you started writing code faster.
-//
+/*
+ * Queen Attack
+ */
 
 const N = 8;
 
@@ -21,7 +20,7 @@ export class QueenAttack {
   }
 
   toString() {
-    let m = []
+    let m = [];
     for (let ix = 0; ix < N; ix++) {
       m[ix] = [];
       for (let jx = 0; jx < N; jx++) {
