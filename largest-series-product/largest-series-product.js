@@ -7,12 +7,11 @@ export const largestProduct = (series, size) => {
     return 1;
   }
 
-
   if (series.length < size || (series.length === 0 && size > 0)) {
     throw new Error('Span must be smaller than string length');
   }
   else if (size < 0) {
-    throw new  Error('Span must be greater than zero');
+    throw new Error('Span must be greater than zero');
   }
   else if (!series.match(/^[0-9]+$/)) {
     throw new Error('Digits input must only contain digits');

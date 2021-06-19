@@ -20,7 +20,7 @@ const pfWheel = (n, check=false) => {
   //
   let cn = n; // copy
   let base = [2, 3, 5];
-  let base_prod = base.reduce((acc, next) => acc * next, 1);
+  // let base_prod = base.reduce((acc, next) => acc * next, 1);
 
   let inc = [4, 2, 4, 2, 4, 6, 2, 6];
   let divs = [];
