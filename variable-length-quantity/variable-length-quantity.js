@@ -1,5 +1,5 @@
 /*
-
+  VLQ implementation
  */
 
 const SHIFT = 7;

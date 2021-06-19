@@ -5,16 +5,16 @@
 
 export class ComplexNumber {
   constructor(real, imag) {
-    this.re = real
-    this.im = imag
+    this.re = real;
+    this.im = imag;
   }
 
   get real() {
-    return this.re
+    return this.re;
   }
 
   get imag() {
-    return this.im
+    return this.im;
   }
 
   add(other) {
@@ -26,19 +26,19 @@ export class ComplexNumber {
   }
 
   div(other) {
-    const [a, b] = this.to_tuple()
-    const [c, d] = other.to_tuple()
-    const den = c * c + d * d
-    const x = (a * c + b * d) / den
-    const y = (b * c - a * d) / den
+    const [a, b] = this.to_tuple();
+    const [c, d] = other.to_tuple();
+    const den = c * c + d * d;
+    const x = (a * c + b * d) / den;
+    const y = (b * c - a * d) / den;
     return new ComplexNumber(x, y)
   }
 
   mul(other) {
-    const [a, b] = this.to_tuple()
-    const [c, d] = other.to_tuple()
-    const x = (a * c - b * d)
-    const y = (b * c + a * d)
+    const [a, b] = this.to_tuple();
+    const [c, d] = other.to_tuple();
+    const x = (a * c - b * d);
+    const y = (b * c + a * d);
     return new ComplexNumber(x, y)
   }
 
@@ -51,8 +51,8 @@ export class ComplexNumber {
   }
 
   get exp() {
-    const a = Math.exp(this.re)
-    const [x, y] = [Math.cos(this.im), Math.sin(this.im)]
+    const a = Math.exp(this.re);
+    const [x, y] = [Math.cos(this.im), Math.sin(this.im)];
     return new ComplexNumber(a * x, a * y)
   }
 
